@@ -132,33 +132,33 @@ Full write-up: [docs/services/alerting-ntfy-beszel.md](docs/services/alerting-nt
 
 ## Incident log
 
-Short write-ups of real failures and how they were diagnosed. This is the part of the lab I learn the most from.
+Short summaries of real failures and how they were diagnosed. This is the part of the lab I learn the most from. Full write-ups, with timelines, investigation steps and follow-up changes, are in [docs/incidents](docs/incidents/).
 
-**The backup guard that worked a little too well**
+**[The backup guard that worked a little too well](docs/incidents/2026-08-01-backup-max-delete-trip.md)**
 - **Symptom:** The nightly Nextcloud backup failed at 02:26 and paged my phone.
 - **Cause:** A Nextcloud patch upgrade the day before had replaced about 500 hashed asset files, which exceeded the `--max-delete 500` safety limit, so rclone stopped the sync.
 - **Outcome:** The failure alert fired and the `EXIT` trap kept Nextcloud online, so both safeguards were proven on a real failure rather than a test. The limit was raised to 5,000, which is still well below the ~29,000-file dataset, and the size and file-count floors remain the primary defense.
 
-**Tailnet-wide DNS outage**
+**[Tailnet-wide DNS outage](docs/incidents/2026-07-27-tailnet-dns-outage.md)**
 - **Symptom:** Browsing hung on every device whenever Tailscale was connected; failures came in clusters, masked by cache hits.
 - **Diagnosis:** `scutil --dns` showed Tailscale's resolver outranking local DNS, and `tailscale dns status` showed both configured nameservers were dead. One was a stale registration; the other was a Pi whose `tailscaled` I had disabled days earlier to save RAM.
 - **Fix:** Repointed the tailnet at the live Pi, then re-enabled `tailscaled` on the second Pi for redundancy. That service is now documented as load-bearing.
 
-**Docker wouldn't start after an OS update**
+**[Docker wouldn't start after an OS update](docs/incidents/2026-07-28-docker-runc-missing.md)**
 - **Symptom:** `docker.service` failed with `exec: "runc": executable file not found`.
 - **Cause:** The immutable OS image switched to `crun` and stopped shipping `runc`, which the Docker engine still defaults to.
 - **Fix:** Layered `runc` back with `rpm-ostree` and documented it as a required package for future image updates.
 
-**Raspberry Pi DNS node crashing every day or two**
+**[Raspberry Pi DNS node crashing every day or two](docs/incidents/2026-08-09-pi-kernel-oops.md)**
 - **Diagnosis:** Ruled out power (a week of per-minute throttle logs, all clean), the SD card (clean filesystem) and the router (no link events), then set up remote syslog and netconsole to capture crashes from kernel context. The recovered call trace pointed to the Pi 4's onboard Ethernet driver passing corrupted packets up the IPv6 receive path.
 - **Fix:** Upgraded the kernel, with a hardware watchdog as a safety net for unattended recovery. After roughly nine crashes in eight days, the node has not crashed once since. The documented fallback, if it ever returns, is disabling receive checksum offload on that NIC.
 
-**Fresh logins failing while existing sessions worked**
+**[Fresh logins failing while existing sessions worked](docs/incidents/2026-08-25-jellyfin-login-failure.md)**
 - **Symptom:** Jellyfin rejected every new sign-in, but already-logged-in clients kept working, which made it look client-side.
 - **Cause:** The container logs showed a database concurrency exception, which matched a known upstream bug in the default database locking mode.
 - **Fix:** Switched the locking mode, reset the corrupted row version, and cleared stale device sessions.
 
-**The NUC ARP-conflicted with itself**
+**[The NUC ARP-conflicted with itself](docs/incidents/2026-09-11-nuc-self-arp-conflict.md)**
 - **Symptom:** The NUC vanished from its LAN address while staying reachable over Tailscale.
 - **Cause:** Its Wi-Fi adapter had auto-connected and answered the wired adapter's DHCP duplicate-address probe, so NetworkManager declined the lease.
 - **Fix:** Disabled Wi-Fi autoconnect on the host. The lesson I took from it: pinging the Tailscale address is the fastest way to separate "host is down" from "host is fine, its LAN address is gone."
