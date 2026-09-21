@@ -151,7 +151,7 @@ Short write-ups of real failures and how they were diagnosed. This is the part o
 
 **Raspberry Pi DNS node crashing every day or two**
 - **Diagnosis:** Ruled out power (a week of per-minute throttle logs, all clean), the SD card (clean filesystem) and the router (no link events), then set up remote syslog and netconsole to capture crashes from kernel context. The recovered call trace pointed to the Pi 4's onboard Ethernet driver passing corrupted packets up the IPv6 receive path.
-- **Mitigation:** Kernel upgrade plus a hardware watchdog for unattended recovery. The next step if it recurs is disabling receive checksum offload on that NIC.
+- **Fix:** Upgraded the kernel, with a hardware watchdog as a safety net for unattended recovery. After roughly nine crashes in eight days, the node has not crashed once since. The documented fallback, if it ever returns, is disabling receive checksum offload on that NIC.
 
 **Fresh logins failing while existing sessions worked**
 - **Symptom:** Jellyfin rejected every new sign-in, but already-logged-in clients kept working, which made it look client-side.
