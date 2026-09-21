@@ -171,7 +171,8 @@ Short summaries of real failures and how they were diagnosed. This is the part o
 |---|---|
 | [Incidents](docs/incidents/) | Full write-ups of real failures: investigation, root cause, fix and follow-up |
 | [Runbooks](docs/runbooks/) | Backup and restore, monthly maintenance, UPS recovery, and safe remote-shell habits |
-| [Services](docs/services/) | Per-service documentation, starting with monitoring and alerting |
+| [Hosts](docs/hosts/) | Each machine's role, hardware, OS and configuration choices |
+| [Services](docs/services/) | How each service is deployed, backed up and monitored, with design decisions and gotchas |
 
 ---
 
@@ -187,4 +188,4 @@ Linux administration (Debian, Ubuntu, Fedora Atomic) · Proxmox VE · Docker and
 - **Out-of-band console access** to the Proxmox host with an IP-KVM
 - **Managed switch and VLANs** to move IoT devices onto their own segment
 - **B2 object versioning** so an accidental deletion has a grace period before it propagates offsite
-- **Expand this repo** with per-host and per-service docs and sanitized config files
+- **Publish sanitized config files** (Compose files, systemd units and backup scripts)
