@@ -21,6 +21,7 @@
 ```mermaid
 flowchart TB
     subgraph Envy["HP Envy x360 · lid closed"]
+        direction LR
         GDM["GDM autologin"] --> K["kiosk user session"]
         K --> S["kiosk.sh<br/>(settings + idle watcher)"]
         S --> B["Brave --kiosk loop"]
