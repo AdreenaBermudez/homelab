@@ -2,7 +2,7 @@
 
 > I turned a 2018 laptop nobody was using into a wall-style Home Assistant control panel on a 7" Elo touchscreen. Here's how it's built, and everything that broke along the way.
 
-![Elo HA panel](images/panel.jpg)
+<img src="images/panel.jpg" alt="Elo HA panel" width="600">
 
 | Dashboard | Asleep (wakes on first tap) |
 |---|---|
