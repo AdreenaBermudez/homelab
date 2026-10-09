@@ -19,7 +19,7 @@
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph Envy["HP Envy x360 · lid closed"]
         GDM["GDM autologin"] --> K["kiosk user session"]
         K --> S["kiosk.sh<br/>(settings + idle watcher)"]
