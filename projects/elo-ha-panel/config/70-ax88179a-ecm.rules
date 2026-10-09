@@ -1,0 +1,5 @@
+# /etc/udev/rules.d/70-ax88179a-ecm.rules
+# ASIX AX88179A (0b95:1790): force USB configuration 3 (CDC ECM -> cdc_ether).
+# Configs 1 (ax88179_178a) and 2 (cdc_ncm) never reported link on kernel 7.0.
+# Apply: sudo udevadm control --reload-rules, then replug the adapter.
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0b95", ATTR{idProduct}=="1790", ATTR{bConfigurationValue}!="3", ATTR{bConfigurationValue}="3"

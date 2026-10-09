@@ -1,0 +1,6 @@
+# ~kiosk/.config/autostart/ha-kiosk.desktop — starts kiosk.sh at login
+[Desktop Entry]
+Type=Application
+Name=HA Kiosk
+Exec=/home/kiosk/kiosk.sh
+X-GNOME-Autostart-enabled=true

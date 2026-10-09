@@ -1,0 +1,84 @@
+# Elo Panel dashboard — the custom cards (sections view, sized for 800x480).
+# Clock and weather (left) and the Sonos media-control card (right) are
+# standard cards and are omitted here. kiosk_mode (HACS) hides header/sidebar.
+
+# --- Left column, under the weather: smart plugs (Tuya cloud) ---
+# Each plug exposes several switches; target the _socket_1 outlet, not child lock.
+- type: horizontal-stack
+  cards:
+    - type: button
+      entity: switch.adreenas_light_socket_1
+      name: Adreena
+      icon: mdi:lamp
+      show_state: false
+    - type: button
+      entity: switch.patricias_light_socket_1
+      name: Patricia
+      icon: mdi:lamp
+      show_state: false
+    - type: button
+      entity: switch.bedroom_ac_socket_1
+      name: Bedroom AC
+      icon: mdi:air-conditioner
+      show_state: false
+    - type: button
+      entity: switch.living_room_ac_socket_1
+      name: Living AC
+      icon: mdi:air-conditioner
+      show_state: false
+  grid_options:
+    columns: full
+    rows: 2
+
+# --- Right column, under the media card: all-Sonos volume ---
+- type: horizontal-stack
+  cards:
+    - type: button
+      icon: mdi:volume-minus
+      show_name: false
+      tap_action:
+        action: perform-action
+        perform_action: script.office_volume_down
+    - type: button
+      icon: mdi:volume-plus
+      show_name: false
+      tap_action:
+        action: perform-action
+        perform_action: script.office_volume_up
+  grid_options:
+    columns: full
+    rows: 1
+
+# --- Right column: fans, fan lights, projector (Tuya cloud) ---
+# Tap toggles; press-and-hold a fan for speed and oscillation.
+- type: grid
+  columns: 3
+  square: false
+  cards:
+    - type: button
+      entity: fan.bedroom_fan
+      name: Bed fan
+      icon: mdi:fan
+      show_state: false
+    - type: button
+      entity: fan.living_room_fan
+      name: Living fan
+      icon: mdi:fan
+      show_state: false
+    - type: button
+      entity: light.smart_star_projector
+      name: Projector
+      icon: mdi:projector
+      show_state: false
+    - type: button
+      entity: light.bedroom_fan
+      name: Bed fan light
+      icon: mdi:lightbulb
+      show_state: false
+    - type: button
+      entity: light.living_room_fan
+      name: Living light
+      icon: mdi:lightbulb
+      show_state: false
+  grid_options:
+    columns: full

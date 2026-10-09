@@ -1,0 +1,41 @@
+# Home Assistant scripts (scripts.yaml format).
+# Step every Sonos speaker in the "Sonos Speakers" area up/down by 10%.
+# media_player.volume_up/down were silently ignored by these speakers;
+# volume_set with a computed level works. The Spotify account entity shares
+# the area, so it is excluded. Offline speakers are skipped.
+
+office_volume_up:
+  alias: All Sonos volume up
+  icon: mdi:volume-plus
+  mode: queued
+  sequence:
+    - repeat:
+        for_each: >-
+          {{ area_entities('Sonos Speakers') | select('match', 'media_player')
+             | reject('search', 'spotify') | reject('is_state', 'unavailable') | list }}
+        sequence:
+          - action: media_player.volume_set
+            continue_on_error: true
+            target:
+              entity_id: "{{ repeat.item }}"
+            data:
+              volume_level: >-
+                {{ [ (state_attr(repeat.item, 'volume_level') | float(0)) + 0.1, 1 ] | min }}
+
+office_volume_down:
+  alias: All Sonos volume down
+  icon: mdi:volume-minus
+  mode: queued
+  sequence:
+    - repeat:
+        for_each: >-
+          {{ area_entities('Sonos Speakers') | select('match', 'media_player')
+             | reject('search', 'spotify') | reject('is_state', 'unavailable') | list }}
+        sequence:
+          - action: media_player.volume_set
+            continue_on_error: true
+            target:
+              entity_id: "{{ repeat.item }}"
+            data:
+              volume_level: >-
+                {{ [ (state_attr(repeat.item, 'volume_level') | float(0)) - 0.1, 0 ] | max }}
